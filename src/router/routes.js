@@ -1,15 +1,9 @@
-import Home from '@/views/Home'
-import About from '@/views/About'
+import Product from '@/views/Product'
 
 export default [
   {
     path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: About
+    name: 'product',
+    component: Product
   }
 ]
