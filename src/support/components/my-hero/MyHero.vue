@@ -1,7 +1,7 @@
 <template>
-  <section class="hero" :class="{
+  <section class="hero" :class="[mainColor, {
     'is-bold': isBold
-  }">
+  }]">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">{{ title }}</h1>
@@ -35,6 +35,11 @@ export default {
           'dark'
         ].indexOf(value) !== -1
       }
+    }
+  },
+  computed: {
+    mainColor () {
+      return `is-${this.color}`
     }
   }
 }
