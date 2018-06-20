@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-image">
       <figure class="image is-4by3">
-        <img :src="image" :alt="title" />
+        <img :src="image | defaultImage" :alt="title" />
       </figure>
     </div>
 
@@ -34,16 +34,21 @@ export default {
       erquired: false
     },
     price: {
-      type: Number,
+      type: [String, Number],
       required: true
     },
     quantity: {
-      type: Number,
+      type: [String, Number],
       required: true
     },
     image: {
       type: String,
       required: false
+    }
+  },
+  filters: {
+    defaultImage (image) {
+      return image || 'http://via.placeholder.com/500x380?text=sem%20image'
     }
   }
 }
