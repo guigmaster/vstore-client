@@ -1,0 +1,25 @@
+$fab-color: #03A9F4;
+$fab-size: 64px;
+$fab-margin: 1 / 4 * 3 * $fab-size;
+
+.fab {
+  display: inline-block;
+  position: fixed;
+  bottom: $fab-margin;
+  right: $fab-margin;
+  z-index: 9998;
+  width: $fab-size;
+  height: $fab-size;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: $fab-color;
+  text-align: center;
+	color: #fff;
+	font-size: 2.6667em;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .5),
+    3px 3px 3px rgba(0, 0, 0, .25);
+
+    &:hover {
+      background-color: darken($fab-color, 2)
+    }
+}
