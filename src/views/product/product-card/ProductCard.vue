@@ -10,7 +10,7 @@
       <div class="media">
         <div class="media-content">
           <p class="title">{{ title }}</p>
-          <p class="subtitle">{{ price }}</p>
+          <p class="subtitle">{{ price | formatMoney('R$ ') }}</p>
         </div>
       </div>
 
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import accounting from 'accounting'
+
 export default {
   name: 'ProductCard',
   props: {
@@ -49,6 +51,9 @@ export default {
   filters: {
     defaultImage (image) {
       return image || 'http://via.placeholder.com/500x380?text=sem%20image'
+    },
+    formatMoney (value, currency) {
+      return accounting.formatMoney(value, currency, 2, '.', ',')
     }
   }
 }
