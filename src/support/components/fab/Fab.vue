@@ -10,7 +10,7 @@ export default {
   name: 'Fab',
   methods: {
     onClick () {
-      this.$emmit('click')
+      this.$emit('click')
     }
   }
 }

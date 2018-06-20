@@ -24,6 +24,8 @@
         <b-input type="textarea" v-model="product.pro_description" />
       </b-field>
       <div class="buttons is-right">
+        <router-link class="button is-large"
+          :to="{ name: 'products.list' }">Cancelar</router-link>
         <a class="button is-success is-large">Salvar</a>
       </div>
     </div>

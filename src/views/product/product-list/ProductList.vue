@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <fab />
+    <fab @click="gotoForm"/>
   </section>
 </template>
 
@@ -31,6 +31,11 @@ export default {
     ProductCard,
     MyHero,
     Fab
+  },
+  methods: {
+    gotoForm () {
+      this.$router.push({ name: 'products.new' })
+    }
   }
 }
 </script>
