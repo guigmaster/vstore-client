@@ -1,5 +1,9 @@
 <template>
   <section>
+    <my-hero
+      title="VStore produtos"
+      description="Listagem de produtos"
+      />
     <div class="container">
       <div class="columns is-multiline is-mobile" style="margin-top: 10px;">
         <div class="column is-3-desktop is-4-tablet is-10-mobile is-offset-1-mobile"
@@ -18,10 +22,13 @@
 
 <script>
 import ProductCard from './product-card/ProductCard'
+import MyHero from '@/support/components/my-hero/MyHero'
+
 export default {
   name: 'Product',
   components: {
-    ProductCard
+    ProductCard,
+    MyHero
   }
 }
 </script>
