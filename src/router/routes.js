@@ -1,4 +1,4 @@
-import Product from '@/views/Product'
+import Product from '@/views/product/Product'
 
 export default [
   {
