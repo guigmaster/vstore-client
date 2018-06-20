@@ -17,7 +17,7 @@
       </div>
 
       <div class="content">
-        {{ description }}
+        <p>{{ description | readMore(50, '...') }}</p>
       </div>
     </div>
   </div>
@@ -56,6 +56,9 @@ export default {
     },
     formatMoney (value, currency) {
       return accounting.formatMoney(value, currency, 2, '.', ',')
+    },
+    readMore (text, length, suffix) {
+      return text.substring(0, length) + suffix
     }
   }
 }
