@@ -17,18 +17,21 @@
         </div>
       </div>
     </div>
+    <fab />
   </section>
 </template>
 
 <script>
 import ProductCard from './product-card/ProductCard'
 import MyHero from '@/support/components/my-hero/MyHero'
+import Fab from '@/support/components/fab/Fab'
 
 export default {
   name: 'Product',
   components: {
     ProductCard,
-    MyHero
+    MyHero,
+    Fab
   }
 }
 </script>
