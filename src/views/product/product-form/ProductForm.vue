@@ -1,32 +1,52 @@
 <template>
   <section>
-    <b-field label="Name">
-      <b-input v-model="name"></b-input>
-    </b-field>
+    <my-hero title="Cadastro de Produtos" />
+    <div class="container is-fluid" style="margin-top: 20px">
+      <b-field label="Nome">
+        <b-input v-model="product.pro_name" />
+      </b-field>
 
-    <b-field label="Email" type="is-danger" message="This email is invalid">
-      <b-input type="email" value="john@" maxlength="30"></b-input>
-    </b-field>
+      <b-field label="Quantidade">
+        <b-input v-model="product.pro_quantity" />
+      </b-field>
 
-    <b-field label="Username" type="is-success" message="This username is available">
-      <b-input value="johnsilver" maxlength="30"></b-input>
-    </b-field>
+      <b-field label="Preço"></b-field>
+      <b-field>
+        <p class="control">
+          <span class="button is-static">R$ </span>
+        </p>
+        <p class="control is-expanded">
+          <b-input v-model="product.pro_price" />
+        </p>
+      </b-field>
 
-    <b-field label="Password">
-      <b-input type="password" value="iwantmytreasure" password-reveal></b-input>
-    </b-field>
-
-    <b-field label="Message">
-      <b-input maxlength="200" type="textarea"></b-input>
-    </b-field>
+      <b-field label="Descrição">
+        <b-input type="textarea" v-model="product.pro_description" />
+      </b-field>
+      <div class="buttons is-right">
+        <a class="button is-success is-large">Salvar</a>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
+import MyHero from '@/support/components/my-hero/MyHero'
+
 export default {
+  name: 'ProductForm',
+  components: {
+    MyHero
+  },
   data () {
     return {
-      name: 'John Silver'
+      name: 'John Silver',
+      product: {
+        pro_name: '',
+        pro_quantity: '',
+        pro_price: '',
+        pro_description: ''
+      }
     }
   }
 }
