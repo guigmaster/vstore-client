@@ -2,21 +2,21 @@
   <section>
     <my-hero title="Cadastro de Produtos" />
     <form class="container is-fluid" style="margin-top: 20px" enctype="multipart/form-data">
-      <b-field label="Nome">
-        <b-input v-model="$v['product.pro_name'].$model" />
+      <b-field label="Nome" :type="getValidationType('product.pro_name')">
+        <b-input v-model="$v.product.pro_name.$model" />
       </b-field>
 
-      <b-field label="Quantidade">
-        <b-input v-model="$v['product.pro_quantity'].$model" />
+      <b-field label="Quantidade" :type="getValidationType('product.pro_quantity')">
+        <b-input v-model="$v.product.pro_quantity.$model" />
       </b-field>
 
-      <b-field label="Preço"></b-field>
-      <b-field>
+      <b-field label="Preço" :type="getValidationType('product.pro_price')" />
+      <b-field :type="getValidationType('product.pro_price')">
         <p class="control">
           <span class="button is-static">R$ </span>
         </p>
         <p class="control is-expanded">
-          <money class="input" v-model="$v['product.pro_price'].$model" v-bind="money" />
+          <money class="input" v-model="$v.product.pro_price.$model" v-bind="money" />
         </p>
       </b-field>
 
@@ -49,6 +49,7 @@
 
 <script>
 import { Money } from 'v-money'
+import { get } from 'lodash'
 import { required, integer, decimal, alphaNum } from 'vuelidate/lib/validators'
 import MyHero from '@/support/components/my-hero/MyHero'
 
@@ -76,17 +77,27 @@ export default {
     }
   },
   validations: {
-    'product.pro_name': {
-      required,
-      alphaNum
-    },
-    'product.pro_quantity': {
-      required,
-      integer
-    },
-    'product.pro_price': {
-      required,
-      decimal
+    product: {
+      pro_name: {
+        required,
+        alphaNum
+      },
+      pro_quantity: {
+        required,
+        integer
+      },
+      pro_price: {
+        required,
+        decimal
+      }
+    }
+  },
+  methods: {
+    getValidationType (key) {
+      const fied = get(this.$v, key)
+      return (fied.$dirty && fied.$invalid)
+        ? 'is-danger'
+        : null
     }
   }
 }
