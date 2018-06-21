@@ -1,7 +1,7 @@
 <template>
   <section>
     <my-hero title="Cadastro de Produtos" />
-    <div class="container is-fluid" style="margin-top: 20px">
+    <form class="container is-fluid" style="margin-top: 20px" enctype="multipart/form-data">
       <b-field label="Nome">
         <b-input v-model="product.pro_name" />
       </b-field>
@@ -23,12 +23,26 @@
       <b-field label="Descrição">
         <b-input type="textarea" v-model="product.pro_description" />
       </b-field>
+
+      <b-field class="file">
+        <b-upload v-model="product.pro_image">
+          <a class="button is-primary">
+            <b-icon icon="upload"></b-icon>
+            <span>Selecione uma imagem</span>
+          </a>
+        </b-upload>
+        <span class="file-name"
+          v-if="product.pro_image && product.pro_image.length">
+          {{ product.pro_image[0].name }}
+        </span>
+      </b-field>
+
       <div class="buttons is-right">
         <router-link class="button is-large"
           :to="{ name: 'products.list' }">Cancelar</router-link>
         <a class="button is-success is-large">Salvar</a>
       </div>
-    </div>
+    </form>
   </section>
 </template>
 
@@ -55,7 +69,8 @@ export default {
         pro_name: '',
         pro_quantity: '',
         pro_price: 0.00,
-        pro_description: ''
+        pro_description: '',
+        pro_image: null
       }
     }
   }
