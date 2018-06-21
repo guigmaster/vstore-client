@@ -5,10 +5,9 @@ import ProductForm from '@/views/product/product-form/ProductForm'
 export default [
   {
     path: '/',
-    redirect: { name: 'products.index' }
+    redirect: { name: 'products.list' }
   },
   {
-    name: 'products.index',
     path: '/products',
     component: Product,
     children: [
