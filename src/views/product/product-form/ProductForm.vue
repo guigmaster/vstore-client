@@ -16,7 +16,7 @@
           <span class="button is-static">R$ </span>
         </p>
         <p class="control is-expanded">
-          <b-input v-model="product.pro_price" />
+          <money class="input" v-model="product.pro_price" v-bind="money" />
         </p>
       </b-field>
 
@@ -33,20 +33,28 @@
 </template>
 
 <script>
+import { Money } from 'v-money'
 import MyHero from '@/support/components/my-hero/MyHero'
 
 export default {
   name: 'ProductForm',
   components: {
-    MyHero
+    MyHero,
+    Money
   },
   data () {
     return {
       name: 'John Silver',
+      money: {
+        decimal: ',',
+        thousands: '.',
+        precision: 2,
+        masked: false
+      },
       product: {
         pro_name: '',
         pro_quantity: '',
-        pro_price: '',
+        pro_price: 0.00,
         pro_description: ''
       }
     }
