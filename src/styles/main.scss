@@ -10,3 +10,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.container.is-fluid {
+  margin-left: 32px;
+  margin-right: 32px;
+  max-width: none;
+  width: auto;
+}
