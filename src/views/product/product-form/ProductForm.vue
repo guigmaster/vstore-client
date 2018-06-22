@@ -58,7 +58,9 @@
 <script>
 import { Money } from 'v-money'
 import { get } from 'lodash'
-import { required, integer, decimal, alphaNum } from 'vuelidate/lib/validators'
+import { required, integer, decimal } from 'vuelidate/lib/validators'
+import axios from 'axios'
+import toast from '@/support/helpers/toast'
 import MyHero from '@/support/components/my-hero/MyHero'
 
 export default {
@@ -69,6 +71,7 @@ export default {
   },
   data () {
     return {
+      appHost: process.env.VUE_APP_HOST,
       money: {
         decimal: ',',
         thousands: '.',
@@ -84,8 +87,7 @@ export default {
         pro_image: null
       },
       nameRules: {
-        required: 'Campo nome é obrigatório',
-        alphaNum: 'Somente são permitidos números e letras'
+        required: 'Campo nome é obrigatório'
       },
       quantityRules: {
         required: 'Campo quantidade é obrigatório',
@@ -100,8 +102,7 @@ export default {
   validations: {
     product: {
       pro_name: {
-        required,
-        alphaNum
+        required
       },
       pro_quantity: {
         required,
@@ -113,7 +114,24 @@ export default {
       }
     }
   },
+  mounted () {
+    if (this.$route.name === 'products.edit' && this.$route.params.id) {
+      this.getProductData(this.$route.params.id)
+    }
+  },
   methods: {
+    getProductData: async function (id) {
+      try {
+        const { data } = await axios.get(`${this.appHost}/products/${id}`)
+        if (data && !data.product) {
+          toast.error('Falha ao obter dados do produto', 'Erro')
+        } else {
+          this.product = Object.assign({}, data.product)
+        }
+      } catch (error) {
+        toast.error('Falha ao obter dados do produto', 'Erro')
+      }
+    },
     getValidationType (key) {
       const field = get(this.$v, key)
       return (field.$dirty && field.$invalid)
@@ -128,12 +146,49 @@ export default {
         }
       })
     },
-    onSubmit () {
+    onSubmit: async function () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        let payload = { ...this.product }
-        payload['pro_price'] = payload['pro_price'].toFixed(2)
-        console.log(payload)
+        let product = { ...this.product }
+        product['pro_price'] = product['pro_price'].toFixed(2)
+
+        const payload = new FormData()
+
+        Object.keys(product).forEach(key => {
+          if (key === 'pro_image' && product[key]) {
+            payload.append(key, product[key][0])
+          } else {
+            payload.append(key, product[key])
+          }
+        })
+
+        if (this.$route.name === 'products.edit' && this.$route.params.id) {
+          this.update(this.$route.params.id, payload)
+        } else {
+          this.create(payload)
+        }
+      }
+    },
+    create: async function (payload) {
+      try {
+        const response = await axios.post(`${this.appHost}/products`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+        if (response.data) {
+          toast.success('Produto inserido com sucesso!', 'Sucesso!')
+          this.$router.push({ name: 'products.list' })
+        }
+      } catch (error) {
+        toast.error('Falha ao cadastrar produto!', 'Error!')
+      }
+    },
+    update: async function (id, payload) {
+      try {
+        const response = await axios.put(`${this.appHost}/products/${id}`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+        if (response.data) {
+          toast.success('Produto inserido com sucesso!', 'Sucesso!')
+          this.$router.push({ name: 'products.list' })
+        }
+      } catch (error) {
+        toast.error('Falha ao cadastrar produto!', 'Error!')
       }
     }
   }

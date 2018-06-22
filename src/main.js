@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 import Vuelidate from 'vuelidate'
 

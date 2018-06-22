@@ -20,6 +20,11 @@ export default [
         name: 'products.new',
         path: 'create',
         component: ProductForm
+      },
+      {
+        name: 'products.edit',
+        path: ':id/edit',
+        component: ProductForm
       }
     ]
   }

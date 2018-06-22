@@ -16,10 +16,18 @@
         </div>
       </div>
 
-      <div class="content">
+      <div class="content" v-if="description">
         <p>{{ description | readMore(50, '...') }}</p>
       </div>
     </div>
+    <footer class="card-footer">
+      <a @click.prevent="onDelete" class="card-footer-item has-text-white has-background-danger">Apagar</a>
+      <router-link
+        :to="{ name: 'products.edit', params: { id: id } }"
+        class="card-footer-item has-text-white has-background-info">
+        Editar
+      </router-link>
+    </footer>
   </div>
 </template>
 
@@ -29,6 +37,10 @@ import accounting from 'accounting'
 export default {
   name: 'ProductCard',
   props: {
+    id: {
+      type: [Number, String],
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -59,6 +71,11 @@ export default {
     },
     readMore (text, length, suffix) {
       return text.substring(0, length) + suffix
+    }
+  },
+  methods: {
+    onDelete () {
+      this.$emit('delete', this.id)
     }
   }
 }
