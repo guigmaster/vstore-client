@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import ProductCard from '../product-card/ProductCard'
 import MyHero from '@/support/components/my-hero/MyHero'
 import Fab from '@/support/components/fab/Fab'
@@ -47,9 +49,21 @@ export default {
       productList: []
     }
   },
+  mounted () {
+    this.getAllProducts()
+  },
   methods: {
     gotoForm () {
       this.$router.push({ name: 'products.new' })
+    },
+    getAllProducts: async function () {
+      const appHost = process.env.VUE_APP_HOST
+      const { data } = await axios.get(`${appHost}/products`)
+      this.productList = data.products.map(item => {
+        return item.pro_image
+          ? { ...item, pro_image: `${appHost}/${item.pro_image}` }
+          : { ...item }
+      })
     }
   }
 }
