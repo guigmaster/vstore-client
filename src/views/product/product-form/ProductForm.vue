@@ -2,16 +2,22 @@
   <section>
     <my-hero title="Cadastro de Produtos" />
     <form class="container is-fluid" style="margin-top: 20px" enctype="multipart/form-data">
-      <b-field label="Nome" :type="getValidationType('product.pro_name')">
+      <b-field label="Nome"
+        :type="getValidationType('product.pro_name')"
+        :message="getMessagesForRules('product.pro_name', nameRules)">
         <b-input v-model="$v.product.pro_name.$model" />
       </b-field>
 
-      <b-field label="Quantidade" :type="getValidationType('product.pro_quantity')">
+      <b-field label="Quantidade"
+        :type="getValidationType('product.pro_quantity')"
+        :message="getMessagesForRules('product.pro_quantity', quantityRules)">
         <b-input v-model="$v.product.pro_quantity.$model" />
       </b-field>
 
       <b-field label="Preço" :type="getValidationType('product.pro_price')" />
-      <b-field :type="getValidationType('product.pro_price')">
+      <b-field
+        :type="getValidationType('product.pro_price')"
+        :message="getMessagesForRules('product.pro_price', priceRules)">
         <p class="control">
           <span class="button is-static">R$ </span>
         </p>
@@ -73,6 +79,18 @@ export default {
         pro_price: 0.00,
         pro_description: '',
         pro_image: null
+      },
+      nameRules: {
+        required: 'Campo nome é obrigatório',
+        alphaNum: 'Somente são permitidos números e letras'
+      },
+      quantityRules: {
+        required: 'Campo quantidade é obrigatório',
+        integer: 'Somente números são permitidos'
+      },
+      priceRules: {
+        required: 'Campo preço é obrigatório',
+        decimal: 'Apenas valores decimais são permitidos'
       }
     }
   },
@@ -94,10 +112,18 @@ export default {
   },
   methods: {
     getValidationType (key) {
-      const fied = get(this.$v, key)
-      return (fied.$dirty && fied.$invalid)
+      const field = get(this.$v, key)
+      return (field.$dirty && field.$invalid)
         ? 'is-danger'
         : null
+    },
+    getMessagesForRules (key, rules) {
+      const field = get(this.$v, key)
+      return Object.keys(rules).map(rule => {
+        if (field.$dirty && field.$invalid && !field[rule]) {
+          return rules[rule]
+        }
+      })
     }
   }
 }
