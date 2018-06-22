@@ -115,7 +115,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.name === 'products.edit') {
+    if (this.$route.name === 'products.edit' && this.$route.params.id) {
       this.getProductData(this.$route.params.id)
     }
   },
@@ -162,15 +162,33 @@ export default {
           }
         })
 
-        try {
-          const response = await axios.post(`${this.appHost}/products`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
-          if (response.data) {
-            toast.success('Produto inserido com sucesso!', 'Sucesso!')
-            this.$router.push({ name: 'products.list' })
-          }
-        } catch (error) {
-          toast.error('Falha ao cadastrar produto!', 'Error!')
+        if (this.$route.name === 'products.edit' && this.$route.params.id) {
+          this.update(this.$route.params.id, payload)
+        } else {
+          this.create(payload)
         }
+      }
+    },
+    create: async function (payload) {
+      try {
+        const response = await axios.post(`${this.appHost}/products`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+        if (response.data) {
+          toast.success('Produto inserido com sucesso!', 'Sucesso!')
+          this.$router.push({ name: 'products.list' })
+        }
+      } catch (error) {
+        toast.error('Falha ao cadastrar produto!', 'Error!')
+      }
+    },
+    update: async function (id, payload) {
+      try {
+        const response = await axios.put(`${this.appHost}/products/${id}`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+        if (response.data) {
+          toast.success('Produto inserido com sucesso!', 'Sucesso!')
+          this.$router.push({ name: 'products.list' })
+        }
+      } catch (error) {
+        toast.error('Falha ao cadastrar produto!', 'Error!')
       }
     }
   }
