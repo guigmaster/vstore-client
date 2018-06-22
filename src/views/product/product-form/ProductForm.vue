@@ -1,22 +1,30 @@
 <template>
   <section>
     <my-hero title="Cadastro de Produtos" />
-    <form class="container is-fluid" style="margin-top: 20px" enctype="multipart/form-data">
-      <b-field label="Nome">
-        <b-input v-model="product.pro_name" />
+    <form class="container is-fluid"
+      style="margin-top: 20px"
+      @submit.prevent="onSubmit">
+      <b-field label="Nome"
+        :type="getValidationType('product.pro_name')"
+        :message="getMessagesForRules('product.pro_name', nameRules)">
+        <b-input v-model="$v.product.pro_name.$model" />
       </b-field>
 
-      <b-field label="Quantidade">
-        <b-input v-model="product.pro_quantity" />
+      <b-field label="Quantidade"
+        :type="getValidationType('product.pro_quantity')"
+        :message="getMessagesForRules('product.pro_quantity', quantityRules)">
+        <b-input v-model="$v.product.pro_quantity.$model" />
       </b-field>
 
-      <b-field label="Preço"></b-field>
-      <b-field>
+      <b-field label="Preço" :type="getValidationType('product.pro_price')" />
+      <b-field
+        :type="getValidationType('product.pro_price')"
+        :message="getMessagesForRules('product.pro_price', priceRules)">
         <p class="control">
           <span class="button is-static">R$ </span>
         </p>
         <p class="control is-expanded">
-          <money class="input" v-model="product.pro_price" v-bind="money" />
+          <money class="input" v-model="$v.product.pro_price.$model" v-bind="money" />
         </p>
       </b-field>
 
@@ -40,7 +48,8 @@
       <div class="buttons is-right">
         <router-link class="button is-large"
           :to="{ name: 'products.list' }">Cancelar</router-link>
-        <a class="button is-success is-large">Salvar</a>
+        <button class="button is-large is-success"
+          :disabled="$v.$invalid">Salvar</button>
       </div>
     </form>
   </section>
@@ -48,6 +57,8 @@
 
 <script>
 import { Money } from 'v-money'
+import { get } from 'lodash'
+import { required, integer, decimal, alphaNum } from 'vuelidate/lib/validators'
 import MyHero from '@/support/components/my-hero/MyHero'
 
 export default {
@@ -58,19 +69,71 @@ export default {
   },
   data () {
     return {
-      name: 'John Silver',
       money: {
         decimal: ',',
         thousands: '.',
         precision: 2,
         masked: false
       },
+      submitStatus: null,
       product: {
         pro_name: '',
         pro_quantity: '',
         pro_price: 0.00,
         pro_description: '',
         pro_image: null
+      },
+      nameRules: {
+        required: 'Campo nome é obrigatório',
+        alphaNum: 'Somente são permitidos números e letras'
+      },
+      quantityRules: {
+        required: 'Campo quantidade é obrigatório',
+        integer: 'Somente números são permitidos'
+      },
+      priceRules: {
+        required: 'Campo preço é obrigatório',
+        decimal: 'Apenas valores decimais são permitidos'
+      }
+    }
+  },
+  validations: {
+    product: {
+      pro_name: {
+        required,
+        alphaNum
+      },
+      pro_quantity: {
+        required,
+        integer
+      },
+      pro_price: {
+        required,
+        decimal
+      }
+    }
+  },
+  methods: {
+    getValidationType (key) {
+      const field = get(this.$v, key)
+      return (field.$dirty && field.$invalid)
+        ? 'is-danger'
+        : null
+    },
+    getMessagesForRules (key, rules) {
+      const field = get(this.$v, key)
+      return Object.keys(rules).map(rule => {
+        if (field.$dirty && field.$invalid && !field[rule]) {
+          return rules[rule]
+        }
+      })
+    },
+    onSubmit () {
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        let payload = { ...this.product }
+        payload['pro_price'] = payload['pro_price'].toFixed(2)
+        console.log(payload)
       }
     }
   }
