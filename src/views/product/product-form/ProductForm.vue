@@ -114,7 +114,24 @@ export default {
       }
     }
   },
+  mounted () {
+    if (this.$route.name === 'products.edit') {
+      this.getProductData(this.$route.params.id)
+    }
+  },
   methods: {
+    getProductData: async function (id) {
+      try {
+        const { data } = await axios.get(`${this.appHost}/products/${id}`)
+        if (data && !data.product) {
+          toast.error('Falha ao obter dados do produto', 'Erro')
+        } else {
+          this.product = Object.assign({}, data.product)
+        }
+      } catch (error) {
+        toast.error('Falha ao obter dados do produto', 'Erro')
+      }
+    },
     getValidationType (key) {
       const field = get(this.$v, key)
       return (field.$dirty && field.$invalid)
