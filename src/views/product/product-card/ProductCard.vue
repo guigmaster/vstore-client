@@ -22,7 +22,11 @@
     </div>
     <footer class="card-footer">
       <a href="#" class="card-footer-item has-text-white has-background-danger">Apagar</a>
-      <a href="#" class="card-footer-item has-text-white has-background-info">Editar</a>
+      <router-link
+        :to="{ name: 'products.edit', params: { id: id } }"
+        class="card-footer-item has-text-white has-background-info">
+        Editar
+      </router-link>
     </footer>
   </div>
 </template>
@@ -33,6 +37,10 @@ import accounting from 'accounting'
 export default {
   name: 'ProductCard',
   props: {
+    id: {
+      type: [Number, String],
+      required: true
+    },
     title: {
       type: String,
       required: true

@@ -11,6 +11,7 @@
           v-for="(product, i) in productList"
           :key="i">
           <product-card
+            :id="product.pro_id"
             :title="product.pro_name"
             :description="product.pro_description"
             :price="product.pro_price"
