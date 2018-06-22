@@ -16,7 +16,8 @@
             :description="product.pro_description"
             :price="product.pro_price"
             :quantity="product.pro_quantity"
-            :image="product.pro_image" />
+            :image="product.pro_image"
+            @delete="onDeleteProduct" />
         </div>
       </div>
       <b-notification
@@ -33,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 import ProductCard from '../product-card/ProductCard'
 import MyHero from '@/support/components/my-hero/MyHero'
@@ -69,6 +71,33 @@ export default {
         })
       } catch (error) {
         toast.error('Falha ao obter listagem de produtos', 'Erro!')
+      }
+    },
+    onDeleteProduct: async function (id) {
+      const result = await Swal({
+        title: 'Atenção?',
+        text: 'Deseja realmente excluir esse produto!',
+        type: 'warning',
+        showCancelButton: true,
+        buttonsStyling: true,
+        confirmButtonText: 'Sim',
+        confirmButtonColor: 'hsl(348, 100%, 61%)',
+        cancelButtonText: 'Não',
+        reverseButtons: true
+      })
+
+      if (result.value) {
+        try {
+          const { data } = await axios.delete(`${this.appHost}/products/${id}`)
+          if (data && data.message) {
+            toast.success('Produto removido com sucesso!', 'Sucesso!')
+            this.getAllProducts()
+          } else {
+            toast.error('Falha na exclussão do produto', 'Erro')
+          }
+        } catch (error) {
+          toast.error('Falha na exclussão do produto', 'Erro')
+        }
       }
     }
   }

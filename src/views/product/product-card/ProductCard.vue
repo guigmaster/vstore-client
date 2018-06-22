@@ -21,7 +21,7 @@
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item has-text-white has-background-danger">Apagar</a>
+      <a @click.prevent="onDelete" class="card-footer-item has-text-white has-background-danger">Apagar</a>
       <router-link
         :to="{ name: 'products.edit', params: { id: id } }"
         class="card-footer-item has-text-white has-background-info">
@@ -71,6 +71,11 @@ export default {
     },
     readMore (text, length, suffix) {
       return text.substring(0, length) + suffix
+    }
+  },
+  methods: {
+    onDelete () {
+      this.$emit('delete', this.id)
     }
   }
 }
