@@ -1,7 +1,9 @@
 <template>
   <section>
     <my-hero title="Cadastro de Produtos" />
-    <form class="container is-fluid" style="margin-top: 20px" enctype="multipart/form-data">
+    <form class="container is-fluid"
+      style="margin-top: 20px"
+      @submit.prevent="onSubmit">
       <b-field label="Nome"
         :type="getValidationType('product.pro_name')"
         :message="getMessagesForRules('product.pro_name', nameRules)">
@@ -46,8 +48,8 @@
       <div class="buttons is-right">
         <router-link class="button is-large"
           :to="{ name: 'products.list' }">Cancelar</router-link>
-        <a class="button is-large is-success"
-          :disabled="$v.$invalid">Salvar</a>
+        <button class="button is-large is-success"
+          :disabled="$v.$invalid">Salvar</button>
       </div>
     </form>
   </section>
@@ -73,6 +75,7 @@ export default {
         precision: 2,
         masked: false
       },
+      submitStatus: null,
       product: {
         pro_name: '',
         pro_quantity: '',
@@ -124,6 +127,14 @@ export default {
           return rules[rule]
         }
       })
+    },
+    onSubmit () {
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        let payload = { ...this.product }
+        payload['pro_price'] = payload['pro_price'].toFixed(2)
+        console.log(payload)
+      }
     }
   }
 }
