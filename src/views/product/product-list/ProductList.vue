@@ -36,6 +36,7 @@ import axios from 'axios'
 import ProductCard from '../product-card/ProductCard'
 import MyHero from '@/support/components/my-hero/MyHero'
 import Fab from '@/support/components/fab/Fab'
+import toast from '@/support/helpers/toast'
 
 export default {
   name: 'ProductList',
@@ -46,6 +47,7 @@ export default {
   },
   data () {
     return {
+      appHost: process.env.VUE_APP_HOST,
       productList: []
     }
   },
@@ -57,13 +59,16 @@ export default {
       this.$router.push({ name: 'products.new' })
     },
     getAllProducts: async function () {
-      const appHost = process.env.VUE_APP_HOST
-      const { data } = await axios.get(`${appHost}/products`)
-      this.productList = data.products.map(item => {
-        return item.pro_image
-          ? { ...item, pro_image: `${appHost}/${item.pro_image}` }
-          : { ...item }
-      })
+      try {
+        const { data } = await axios.get(`${this.appHost}/products`)
+        this.productList = data.products.map(item => {
+          return item.pro_image
+            ? { ...item, pro_image: `${this.appHost}/${item.pro_image}` }
+            : { ...item }
+        })
+      } catch (error) {
+        toast.error('Falha ao obter listagem de produtos', 'Erro!')
+      }
     }
   }
 }
