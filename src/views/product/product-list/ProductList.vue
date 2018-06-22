@@ -4,17 +4,27 @@
       title="VStore produtos"
       description="Listagem de produtos" />
     <div class="container">
-      <div class="columns is-multiline is-mobile" style="margin-top: 10px;">
+      <div class="columns is-multiline is-mobile"
+        v-if="productList && productList.length > 0"
+        style="margin-top: 10px;">
         <div class="column is-3-desktop is-4-tablet is-10-mobile is-offset-1-mobile"
-          v-for="i in (0, 20)"
+          v-for="(product, i) in productList"
           :key="i">
           <product-card
-            :title="'produto de número ' + i"
-            description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quia, obcaecati consectetur at corrupti corporis!"
-            :price="'10.65'"
-            quantity="100" />
+            :title="product.pro_name"
+            :description="product.pro_description"
+            :price="product.pro_price"
+            :quantity="product.pro_quantity"
+            :image="product.pro_image" />
         </div>
       </div>
+      <b-notification
+        v-else
+        type="is-warning"
+        :closable="false"
+        style="margin-top: 20px">
+        <strong>Nenhum produto encontrado!</strong>
+      </b-notification>
     </div>
     <fab @click="gotoForm"/>
   </section>
@@ -31,6 +41,11 @@ export default {
     ProductCard,
     MyHero,
     Fab
+  },
+  data () {
+    return {
+      productList: []
+    }
   },
   methods: {
     gotoForm () {
