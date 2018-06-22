@@ -59,6 +59,8 @@
 import { Money } from 'v-money'
 import { get } from 'lodash'
 import { required, integer, decimal, alphaNum } from 'vuelidate/lib/validators'
+import axios from 'axios'
+import toast from '@/support/helpers/toast'
 import MyHero from '@/support/components/my-hero/MyHero'
 
 export default {
@@ -69,6 +71,7 @@ export default {
   },
   data () {
     return {
+      appHost: process.env.VUE_APP_HOST,
       money: {
         decimal: ',',
         thousands: '.',
@@ -128,12 +131,20 @@ export default {
         }
       })
     },
-    onSubmit () {
+    onSubmit: async function () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         let payload = { ...this.product }
         payload['pro_price'] = payload['pro_price'].toFixed(2)
-        console.log(payload)
+        try {
+          const response = await axios.post(`${this.appHost}/products`, payload)
+          if (response.data) {
+            toast.success('Produto inserido com sucesso!', 'Sucesso!')
+            this.$router.push({ name: 'products.list' })
+          }
+        } catch (error) {
+          toast.error('Falha ao cadastrar produto!', 'Error!')
+        }
       }
     }
   }
