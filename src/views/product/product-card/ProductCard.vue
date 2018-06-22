@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="content">
+      <div class="content" v-if="description">
         <p>{{ description | readMore(50, '...') }}</p>
       </div>
     </div>
