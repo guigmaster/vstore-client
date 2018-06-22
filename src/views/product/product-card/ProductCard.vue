@@ -20,6 +20,10 @@
         <p>{{ description | readMore(50, '...') }}</p>
       </div>
     </div>
+    <footer class="card-footer">
+      <a href="#" class="card-footer-item has-text-white has-background-danger">Apagar</a>
+      <a href="#" class="card-footer-item has-text-white has-background-info">Editar</a>
+    </footer>
   </div>
 </template>
 
