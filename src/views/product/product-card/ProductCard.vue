@@ -47,7 +47,7 @@ export default {
     },
     description: {
       type: String,
-      erquired: false
+      required: false
     },
     price: {
       type: [String, Number],
