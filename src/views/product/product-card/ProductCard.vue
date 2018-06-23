@@ -11,7 +11,7 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content">
-          <p class="title is-text-overflow" :title="title">{{ title }}</p>
+          <p class="title is-text-overflow" :title="title">{{ title | readMore(12, '...') }}</p>
           <p class="subtitle">{{ price | formatMoney('R$ ') }}</p>
         </div>
       </div>
