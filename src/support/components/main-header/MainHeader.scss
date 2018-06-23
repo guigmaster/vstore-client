@@ -1,0 +1,10 @@
+.main-header {
+  &.is-trasparent {
+    box-shadow: 0 1px 0 hsla(0, 0%, 100%, .2);
+  }
+
+  .main-header__brand {
+    font-size: 28px;
+    line-height: 52px;
+  }
+}
