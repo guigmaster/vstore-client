@@ -12,7 +12,7 @@
   "dependencies": {
     "accounting": "0.4.1",
     "axios": "0.21.1",
-    "buefy": "0.6.6",
+    "buefy": "0.7.2",
     "lodash": "4.17.13",
     "sweetalert2": "7.24.1",
     "toastr": "2.1.4",
